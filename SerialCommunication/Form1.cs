@@ -188,5 +188,160 @@ namespace SerialCommunication
                 labelStatus.Text = "Error sending command: " + ex.Message;
             }
         }
+
+        private void trackBarPWM9_Scroll(object sender, EventArgs e)
+        {
+            try
+            {
+                if (serialPortArduino != null && serialPortArduino.IsOpen)
+                {
+                    string command = "set pwm9 " + trackBarPWM9.Value;
+                    serialPortArduino.WriteLine(command);
+                }
+                else
+                {
+                    labelStatus.Text = "Not connected";
+                }
+            }
+            catch (Exception ex)
+            {
+                labelStatus.Text = "Error sending command: " + ex.Message;
+            }
+        }
+
+        private void trackBarPWM10_Scroll(object sender, EventArgs e)
+        {
+            try
+            {
+                if (serialPortArduino != null && serialPortArduino.IsOpen)
+                {
+                    string command = "set pwm10 " + trackBarPWM10.Value;
+                    serialPortArduino.WriteLine(command);
+                }
+                else
+                {
+                    labelStatus.Text = "Not connected";
+                }
+            }
+            catch (Exception ex)
+            {
+                labelStatus.Text = "Error sending command: " + ex.Message;
+            }
+        }
+
+        private void trackBarPWM11_Scroll(object sender, EventArgs e)
+        {
+            try
+            {
+                if (serialPortArduino != null && serialPortArduino.IsOpen)
+                {
+                    string command = "set pwm11 " + trackBarPWM11.Value;
+                    serialPortArduino.WriteLine(command);
+                }
+                else
+                {
+                    labelStatus.Text = "Not connected";
+                }
+            }
+            catch (Exception ex)
+            {
+                labelStatus.Text = "Error sending command: " + ex.Message;
+            }
+        }
+        private void tabControl_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (tabControl.SelectedTab == tabPageOefening3)
+                {
+                    timerOefening3.Enabled = true;
+                }
+                else
+                {
+                    timerOefening3.Enabled = false;
+                }
+
+                if (tabControl.SelectedTab == tabPageOefening4)
+                {
+                    timerOefening4.Enabled = true;
+                }
+                else
+                {
+                    timerOefening4.Enabled = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                labelStatus.Text = "Error: " + ex.Message;
+            }
+        }
+
+        private void timerOefening3_Tick(object sender, EventArgs e)
+        {
+            try
+            {
+                if (serialPortArduino != null && serialPortArduino.IsOpen)
+                {
+                    // Clear any previous data
+                    try { serialPortArduino.ReadExisting(); } catch { }
+
+                    // Request and parse digital5
+                    serialPortArduino.WriteLine("get d5");
+                    string resp = string.Empty;
+                    try { resp = serialPortArduino.ReadLine().Trim(); } catch { resp = string.Empty; }
+                    string value = resp;
+                    int idx = value.IndexOf(':');
+                    if (idx >= 0) value = value.Substring(idx + 1).Trim();
+                    radioButtonDigital5.Checked = (value == "1");
+
+                    // Request and parse digital6
+                    serialPortArduino.WriteLine("get d6");
+                    try { resp = serialPortArduino.ReadLine().Trim(); } catch { resp = string.Empty; }
+                    value = resp;
+                    idx = value.IndexOf(':');
+                    if (idx >= 0) value = value.Substring(idx + 1).Trim();
+                    radioButtonDigital6.Checked = (value == "1");
+
+                    // Request and parse digital7
+                    serialPortArduino.WriteLine("get d7");
+                    try { resp = serialPortArduino.ReadLine().Trim(); } catch { resp = string.Empty; }
+                    value = resp;
+                    idx = value.IndexOf(':');
+                    if (idx >= 0) value = value.Substring(idx + 1).Trim();
+                    radioButtonDigital7.Checked = (value == "1");
+                }
+            }
+            catch (Exception ex)
+            {
+                labelStatus.Text = "Error: " + ex.Message;
+            }
+        }
+
+        private void timerOefening4_Tick(object sender, EventArgs e)
+        {
+            try
+            {
+                if (serialPortArduino != null && serialPortArduino.IsOpen)
+                {
+                    // Clear any previous data
+                    try { serialPortArduino.ReadExisting(); } catch { }
+
+                    // Request analog 0 value
+                    serialPortArduino.WriteLine("get a0");
+                    string resp = string.Empty;
+                    try { resp = serialPortArduino.ReadLine().Trim(); } catch { resp = string.Empty; }
+                    string value = resp;
+                    int idx = value.IndexOf(':');
+                    if (idx >= 0) value = value.Substring(idx + 1).Trim();
+
+                    // Update UI label
+                    labelAnalog0.Text = value;
+                }
+            }
+            catch (Exception ex)
+            {
+                labelStatus.Text = "Error: " + ex.Message;
+            }
+        }
     }
 }

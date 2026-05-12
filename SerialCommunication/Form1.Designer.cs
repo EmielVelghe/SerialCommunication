@@ -87,6 +87,14 @@
             this.label9 = new System.Windows.Forms.Label();
             this.pictureBox5 = new System.Windows.Forms.PictureBox();
             this.statusStrip = new System.Windows.Forms.StatusStrip();
+            this.timerOefening3 = new System.Windows.Forms.Timer();
+            // timer for Oefening 3
+            this.timerOefening3.Interval = 1000;
+            this.timerOefening3.Tick += new System.EventHandler(this.timerOefening3_Tick);
+            this.timerOefening4 = new System.Windows.Forms.Timer();
+            // timer for Oefening 4
+            this.timerOefening4.Interval = 1000;
+            this.timerOefening4.Tick += new System.EventHandler(this.timerOefening4_Tick);
             this.labelStatus = new System.Windows.Forms.ToolStripStatusLabel();
             this.tabControl.SuspendLayout();
             this.tabPageInstellingen.SuspendLayout();
@@ -173,6 +181,7 @@
             this.tabControl.Margin = new System.Windows.Forms.Padding(4);
             this.tabControl.Name = "tabControl";
             this.tabControl.SelectedIndex = 0;
+            this.tabControl.SelectedIndexChanged += new System.EventHandler(this.tabControl_SelectedIndexChanged);
             this.tabControl.Size = new System.Drawing.Size(1045, 513);
             this.tabControl.TabIndex = 9;
             // 
@@ -623,6 +632,7 @@
             this.trackBarPWM11.Size = new System.Drawing.Size(329, 56);
             this.trackBarPWM11.TabIndex = 4;
             this.trackBarPWM11.TickStyle = System.Windows.Forms.TickStyle.None;
+            this.trackBarPWM11.Scroll += new System.EventHandler(this.trackBarPWM11_Scroll);
             // 
             // label2
             // 
@@ -644,6 +654,7 @@
             this.trackBarPWM10.Size = new System.Drawing.Size(329, 56);
             this.trackBarPWM10.TabIndex = 2;
             this.trackBarPWM10.TickStyle = System.Windows.Forms.TickStyle.None;
+            this.trackBarPWM10.Scroll += new System.EventHandler(this.trackBarPWM10_Scroll);
             // 
             // label1
             // 
@@ -665,6 +676,7 @@
             this.trackBarPWM9.Size = new System.Drawing.Size(329, 56);
             this.trackBarPWM9.TabIndex = 0;
             this.trackBarPWM9.TickStyle = System.Windows.Forms.TickStyle.None;
+            this.trackBarPWM9.Scroll += new System.EventHandler(this.trackBarPWM9_Scroll);
             // 
             // pictureBox2
             // 
@@ -952,6 +964,8 @@
         internal System.Windows.Forms.CheckBox checkBoxDigital4;
         internal System.Windows.Forms.CheckBox checkBoxDigital3;
         internal System.Windows.Forms.CheckBox checkBoxDigital2;
+        private System.Windows.Forms.Timer timerOefening3;
+        private System.Windows.Forms.Timer timerOefening4;
         internal System.Windows.Forms.TabPage tabPageOefening2;
         internal System.Windows.Forms.Label label3;
         internal System.Windows.Forms.TrackBar trackBarPWM11;
