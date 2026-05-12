@@ -40,3 +40,19 @@ AI-related / other configs
 - No CLAUDE.md, .cursorrules, AGENTS.md, CONVENTIONS.md, or similar AI-assistant config files detected.
 
 If anything here should be expanded (examples, more CLI snippets, board fqbn used for CI), say which areas to cover and Copilot can update this file.
+
+Suggested improvements for Copilot sessions
+
+- Add an explicit Arduino example fqbn so Copilot can autocomplete a working compile/upload command, e.g.:
+  - arduino-cli compile --fqbn arduino:avr:uno SerialCommunication.ino
+  - arduino-cli upload -p <port> --fqbn arduino:avr:uno SerialCommunication
+  (Keep <fqbn> and <port> as placeholders if board varies.)
+
+- Add a Release build example for msbuild:
+  - msbuild "SerialCommunication.slnx" /p:Configuration=Release
+
+- Note a subtle terminator detail useful for protocol changes: SerialCommand.h comments reference '\r' as the default terminator, but SerialCommand.cpp constructs the object with term = '\n'. Form1.cs sets SerialPort.NewLine = "\n" and the sketch uses Baudrate 115200 — check CR vs LF handling if clients behave unexpectedly.
+
+- Recommend removing committed build artifacts (bin/, obj/, .vs/) from the repository history or keeping them out of future commits so Copilot doesn't surface compiled binaries as sources of truth.
+
+If helpful, Copilot can apply these edits, add a short README with example fqbn values, or open a PR with the suggested removals. Which would you like next?
