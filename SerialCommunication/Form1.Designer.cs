@@ -95,6 +95,10 @@
             // timer for Oefening 4
             this.timerOefening4.Interval = 1000;
             this.timerOefening4.Tick += new System.EventHandler(this.timerOefening4_Tick);
+            this.timerOefening5 = new System.Windows.Forms.Timer();
+            // timer for Oefening 5
+            this.timerOefening5.Interval = 1000;
+            this.timerOefening5.Tick += new System.EventHandler(this.timerOefening5_Tick);
             this.labelStatus = new System.Windows.Forms.ToolStripStatusLabel();
             this.tabControl.SuspendLayout();
             this.tabPageInstellingen.SuspendLayout();
@@ -966,6 +970,7 @@
         internal System.Windows.Forms.CheckBox checkBoxDigital2;
         private System.Windows.Forms.Timer timerOefening3;
         private System.Windows.Forms.Timer timerOefening4;
+        private System.Windows.Forms.Timer timerOefening5;
         internal System.Windows.Forms.TabPage tabPageOefening2;
         internal System.Windows.Forms.Label label3;
         internal System.Windows.Forms.TrackBar trackBarPWM11;

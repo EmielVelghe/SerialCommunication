@@ -269,6 +269,15 @@ namespace SerialCommunication
                 {
                     timerOefening4.Enabled = false;
                 }
+
+                if (tabControl.SelectedTab == tabPageOefening5)
+                {
+                    timerOefening5.Enabled = true;
+                }
+                else
+                {
+                    timerOefening5.Enabled = false;
+                }
             }
             catch (Exception ex)
             {
@@ -325,17 +334,67 @@ namespace SerialCommunication
                 {
                     // Clear any previous data
                     try { serialPortArduino.ReadExisting(); } catch { }
-
-                    // Request analog 0 value
+                    // Request analog 0 value
                     serialPortArduino.WriteLine("get a0");
                     string resp = string.Empty;
                     try { resp = serialPortArduino.ReadLine().Trim(); } catch { resp = string.Empty; }
                     string value = resp;
                     int idx = value.IndexOf(':');
                     if (idx >= 0) value = value.Substring(idx + 1).Trim();
-
-                    // Update UI label
+                    // Update UI label
                     labelAnalog0.Text = value;
+                }
+            }
+            catch (Exception ex)
+            {
+                labelStatus.Text = "Error: " + ex.Message;
+            }
+        }
+
+        private void timerOefening5_Tick(object sender, EventArgs e)
+        {
+            try
+            {
+                if (serialPortArduino == null || !serialPortArduino.IsOpen)
+                {
+                    labelStatus.Text = "Not connected";
+                    return;
+                }
+
+                // Clear previous data
+                try { serialPortArduino.ReadExisting(); } catch { }
+
+                // Read desired temperature from analog 0 (0..1023 -> 5..45 °C)
+                serialPortArduino.WriteLine("get a0");
+                string respA0 = string.Empty;
+                try { respA0 = serialPortArduino.ReadLine().Trim(); } catch { respA0 = string.Empty; }
+                string valA0 = respA0;
+                int idxA0 = valA0.IndexOf(':');
+                if (idxA0 >= 0) valA0 = valA0.Substring(idxA0 + 1).Trim();
+                int rawA0 = 0; int.TryParse(valA0, out rawA0);
+                double mA0 = 40.0 / 1023.0; // slope for 5..45
+                double desiredTemp = mA0 * rawA0 + 5.0;
+                // Read current temperature from analog 1 (0..1023 -> 0..500 °C)
+                serialPortArduino.WriteLine("get a1");
+                string respA1 = string.Empty;
+                try { respA1 = serialPortArduino.ReadLine().Trim(); } catch { respA1 = string.Empty; }
+                string valA1 = respA1;
+                int idxA1 = valA1.IndexOf(':');
+                if (idxA1 >= 0) valA1 = valA1.Substring(idxA1 + 1).Trim();
+                int rawA1 = 0; int.TryParse(valA1, out rawA1);
+                double mA1 = 500.0 / 1023.0;
+                double currentTemp = mA1 * rawA1;
+                // Update UI (rounded to 1 decimal)
+                labelGewensteTemp.Text = Math.Round(desiredTemp, 1).ToString("0.0") + " °C";
+                labelHuidigeTemp.Text = Math.Round(currentTemp, 1).ToString("0.0") + " °C";
+                // Control LED on digital pin 2: ON when current < desired
+                if (currentTemp < desiredTemp)
+                {
+                    serialPortArduino.WriteLine("set d2 high");
+                }
+                else
+                {
+                    serialPortArduino.WriteLine("set d2 low");
                 }
             }
             catch (Exception ex)
